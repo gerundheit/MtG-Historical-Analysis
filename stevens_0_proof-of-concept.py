@@ -1,11 +1,11 @@
-#Part 0: proof of access to dataset
+#MtG Historical Analysis Part 0: Proof of Access
 import requests, time, os, json
 
-#first, make a folder for the files we want to download
+#make a folder for the files
 if not os.path.exists("sets"):
     os.makedirs("sets")
 
-#we will request the first page of people data, then use the "next" key to keep going
+#equest the first page of set data
 url = "https://api.magicthegathering.io/v1/sets"
 print(url)
 r = requests.get(url)
