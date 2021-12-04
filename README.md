@@ -2,7 +2,7 @@
  Uses the Magic the Gathering API to perform statistical analysis on the evolution of published cards over the course of the game's history.
 
  PART 1: Transforming Data
- The dataset will be downloaded via basic API query and saved locally as a series of JSON files. Data will be extracted from these files and loaded into database files/tables as needed to perform the analysis described in Parts 2 & 3.
+ The dataset will be downloaded via basic API query and saved locally as JSON file. Data will be extracted from JSON and loaded into database to perform the analysis described in Parts 2 & 3.
 
  PART 2: Charting Data
  MatPlotLib will be used to create charts of several historical trends of interest over the game's development. One will be a multi-line graph depicting the numbers of cards of each major type published in each successive card set, to show trends in the relative numbers of e.g. creature cards vs. sorcery cards over time. Another series of charts will sample several card sets of interest and depict their mana curves for different card types, i.e. the number of cards in the set broken down by card type and mana cost. A third will show the power and toughness of creatures relative to their mana cost over time.
@@ -14,7 +14,7 @@
  The methodology and results of the project will be presented in a ten-minute slideshows video with voiceover narration. A 2-3 page writeup of the experience of the project will accompany, and the dataset and code will be made available to classmates via GitHub for review.
 
 ## Installation
- This project is written in Python 3.9.4. It requires the additional libraries MatPlotLib, Requests, and Sqlite, which are available via Pip.
+ This project is written in Python 3.9.4. It requires the additional libraries MatPlotLib, Requests, and SQlite, which are available via Pip.
 
 ## Usage
  TODO: Write usage instructions
