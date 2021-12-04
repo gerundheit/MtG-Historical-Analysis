@@ -24,7 +24,7 @@ while setsURL != None:
     else:
         setsURL = None
     time.sleep(3)
-#
+
 # #Request data and write cards to the file
 incr = 1
 while cardsURL!= None:
