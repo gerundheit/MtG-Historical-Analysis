@@ -25,7 +25,7 @@ while setsURL != None:
         setsURL = None
     time.sleep(3)
 
-# #Request data and write cards to the file
+#Request data and write cards to the file
 incr = 1
 while cardsURL!= None:
     r = requests.get(cardsURL)
