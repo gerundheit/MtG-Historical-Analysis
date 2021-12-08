@@ -17,6 +17,7 @@ c.execute('DROP TABLE IF EXISTS cards')
 sql_sets_table = """CREATE TABLE sets (
                                 id text PRIMARY KEY,
                                 name text NOT NULL,
+                                set_type text,
                                 date text
                             );"""
 sql_creatures_table = """CREATE TABLE creatures (
@@ -42,7 +43,7 @@ c.execute(sql_cards_table)
 #Load JSON data into tables relevant to desired analysis
 data = json.load(open('mtg.json'))
 for d in data.get('sets'):
-    c.execute("INSERT INTO sets VALUES (?,?,?)", (d.get('code'), d.get('name'), d.get('releaseDate')))
+    c.execute("INSERT INTO sets VALUES (?,?,?,?)", (d.get('code'), d.get('name'), d.get('type'), d.get('releaseDate')))
 for d in data.get('cards'):
     c.execute("INSERT INTO cards VALUES (?,?,?,?,?,?)", (d.get('id'), d.get('name'), d.get('set'), d.get('cmc'), str(d.get('types')), d.get('text')))
     if 'Creature' in str(d.get('types')):
@@ -62,7 +63,7 @@ print('Test: sets Table Selection: 5 earliest sets sorted by date')
 c.execute("SELECT * FROM sets ORDER BY date LIMIT 5;")
 table_data = c.fetchall()
 for d in table_data:
-    print('Set ID: {}\nSet Name: {}\nSet Date: {}\n\n'.format(d[0], d[1], d[2]))
+    print('Set ID: {}\nSet Name: {}\nSet Type: {}\nSet Date: {}\n\n'.format(d[0], d[1], d[2], d[3]))
 
 print('Test: cards Table Selection: 10 cards with converted mana cost greater than or equal to 7')
 c.execute("SELECT * FROM cards WHERE cmc >= 7 ORDER BY cmc DESC LIMIT 10;")
