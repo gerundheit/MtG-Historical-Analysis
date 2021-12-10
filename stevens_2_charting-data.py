@@ -59,13 +59,23 @@ for card in table_data:
             chart2[set][type][CMC] += 1
 
 #Select data for chart 3: show the power and toughness of creatures relative to their mana cost over time
-# (power + toughness) / CMC
-chart3 = {}
-c.execute("SELECT id, date FROM sets ORDER BY date ASC;")
+setDates = {}
+chart3 = []
+c.execute("SELECT id, date FROM sets ORDER BY date ASC;") #fetch all set publication dates
 sets_data = c.fetchall()
-c.execute("SELECT set_id, cmc, power, toughness FROM creatures;")
+for set in sets_data: #add set and publication info to dictionary
+    setDates.update({set[0]: {'date': set[1]}})
+c.execute("SELECT set_id, cmc, power, toughness FROM creatures;") #fetch all creatures
 creatures_data = c.fetchall()
-
+for creature in creatures_data: #calculate the CMC quotient (power+toughness)/CMC and store in dictionary
+    power, toughness, cmc = creature[2], creature[3], creature[1]
+    if power == -1 or toughness == -1:
+        continue #skips adding a particular creature if its power or toughness is -1, which we used to mark creatures with non-numerical stats during database creation
+    if cmc == 0: #allows program to handle creatures with a CMC of 0; setting the CMC at 0.1 fudges the numbers a little but still gives creatures that are free to cast quotients that are distinct from and advantaged over creatures that cost 1 to cast
+        cmc = 0.01
+    cmcQuot = round((power + toughness) / cmc, 2)
+    pubDate = setDates.get(creature[0])['date'][0:4]
+    chart3.append((pubDate, cmcQuot))
 #Close the database
 conn.close()
 
@@ -97,23 +107,33 @@ plt.legend(['Creatures', 'Planeswalkers', 'Instants', 'Sorceries', 'Enchantments
 plt.show()
 
 #Graph chart 2
-setNames = {'LEA': 'Limited Edition Alpha', 'MH1': 'Modern Horizons 1', 'AFR': 'Adventures in the Forgotten Realms'}
-creatures, planeswalkers, instants, sorceries, enchantments, artifacts = [], [], [], [], [], []
-for key in chart2.keys():
-    plt.figure(num = 6)
+setNames = {'LEA': 'Limited Edition Alpha', 'MH1': 'Modern Horizons 1', 'AFR': 'Adventures in the Forgotten Realms'} #Hard-coding this so the chart can utilize full names of sets, which aren't stored in the cards table data
+for key in chart2.keys(): #for each set of the three
+    plt.figure()
     plt.title('Mana Curve by Card Type: {}'.format(setNames.get(key)))
     plt.xlabel('Converted Mana Cost')
     plt.ylabel('Number of cards')
-    plt.plot(chart2[key].get('Creature').values(), color='#a50041')
+    plt.plot(chart2[key].get('Creature').values(), color='#a50041') #grabs relevant array of values from the dictionary full of data we created above, line 45
     plt.plot(chart2[key].get('Instant').values(), color='#ff8080')
     plt.plot(chart2[key].get('Sorcery').values(), color='#264041')
     plt.plot(chart2[key].get('Enchantment').values(), color='#a580c1')
     plt.plot(chart2[key].get('Artifact').values(), color='#004080')
-    if chart2[key].get('Planeswalker') != None:
+    if chart2[key].get('Planeswalker') != None: #the set LEA did not print any planeswalker cards so we need to write around that
         plt.plot(chart2[key].get('Planeswalker').values(), color='#8080ff')
-        plt.legend(['Creatures', 'Instants', 'Sorceries', 'Enchantments', 'Artifacts'])
+        plt.legend(['Creatures', 'Instants', 'Sorceries', 'Enchantments', 'Artifacts']) #hard-coding the legend instead of pulling from the dictionary because they are not necessarily in the dictionary in the same order that they are being graphed here
     else:
         plt.legend(['Creatures', 'Instants', 'Sorceries', 'Enchantments', 'Artifacts', 'Planeswalkers'])
     plt.show()
 
 #Graph chart 3
+plt.figure()
+plt.title('MtG Creatures: Power/Toughness Compared to Converted Mana Cost Over The Years')
+plt.xlabel('Publication Date')
+plt.ylabel('CMC Quotient\n(power + toughness / converted mana cost)')
+xpoints = []
+ypoints = []
+for tuple in sorted(chart3): #creates simple arrays of the x and y points for each creature
+    xpoints.append(tuple[0])
+    ypoints.append(tuple[1])
+plt.plot(xpoints, ypoints, 'o', alpha=0.3, mec='#000000', mfc='#000000') #using translucent points allows us to approximately view where there are clusters of creatures and where there are outliers
+plt.show()
