@@ -42,27 +42,29 @@ for d in table_data: #Add each card's type data to the counts inside the set dic
 dateCompare(chart1)
 
 #Select data for chart 2: sample several card sets of interest and depict their mana curves for different card types, i.e. the number of cards in the set broken down by card type and mana cost
-chart2 = {'LEA': {}, 'MH1': {}, 'AFR': {}}
-cmcRange = [] #variable to store the range of available CMCs within the sample
+chart2 = {}
 c.execute("SELECT set_id, types, cmc FROM cards WHERE set_id = 'LEA' OR set_id = 'MH1' OR set_id = 'AFR';")
 table_data = c.fetchall()
-for d in table_data: #Add each card's type and CMC data to the counts inside the dictionaries in chart2
-    setID, CMC = d[0], d[2]
-    if CMC not in cmcRange:
-        cmcRange.append(CMC)
-    types = re.findall(pattern, d[1])
-    for type in types:
-        if type in chart2[setID].keys():
-            if CMC in chart2[setID][type].keys():
-                chart2[setID][type].update({CMC: chart2[setID][type][CMC] + 1})
-            else:
-                chart2[setID][type].update({CMC: 1})
+for card in table_data:
+    set, CMC = card[0], card[2]
+    if set not in chart2.keys(): #Adds set labels to the dictionary
+        chart2[set] = {}
+    types = re.findall(pattern, card[1])
+    for type in types: #Adds card types to sets
+        if type not in chart2[set].keys():
+            chart2[set][type] = {}
+        if CMC not in chart2[set][type].keys(): #Adds CMC values to types
+            chart2[set][type][CMC] = 1 #Counts CMC value instances
         else:
-            chart2[setID].update({type: {}})
-cmcRange.sort()
+            chart2[set][type][CMC] += 1
 
 #Select data for chart 3: show the power and toughness of creatures relative to their mana cost over time
 # (power + toughness) / CMC
+chart3 = {}
+c.execute("SELECT id, date FROM sets ORDER BY date ASC;")
+sets_data = c.fetchall()
+c.execute("SELECT set_id, cmc, power, toughness FROM creatures;")
+creatures_data = c.fetchall()
 
 #Close the database
 conn.close()
@@ -88,12 +90,30 @@ plt.plot(x, enchantments, color='#a580c1')
 plt.plot(x, artifacts, color='#004080')
 plt.plot(x, lands, color='#804000')
 plt.xticks(x, sets)
-plt.title("Magic the Gathering: Printing Frequency of Major Card Types Per Core Set") #Label figure
-plt.xlabel("MtG Core Sets")
-plt.ylabel("Number of cards per type")
+plt.title('Magic the Gathering: Printing Frequency of Major Card Types Per Core Set') #Label figure
+plt.xlabel('MtG Core Sets')
+plt.ylabel('Number of cards per type')
 plt.legend(['Creatures', 'Planeswalkers', 'Instants', 'Sorceries', 'Enchantments', 'Artifacts', 'Lands'])
 plt.show()
 
 #Graph chart 2
+setNames = {'LEA': 'Limited Edition Alpha', 'MH1': 'Modern Horizons 1', 'AFR': 'Adventures in the Forgotten Realms'}
+creatures, planeswalkers, instants, sorceries, enchantments, artifacts = [], [], [], [], [], []
+for key in chart2.keys():
+    plt.figure(num = 6)
+    plt.title('Mana Curve by Card Type: {}'.format(setNames.get(key)))
+    plt.xlabel('Converted Mana Cost')
+    plt.ylabel('Number of cards')
+    plt.plot(chart2[key].get('Creature').values(), color='#a50041')
+    plt.plot(chart2[key].get('Instant').values(), color='#ff8080')
+    plt.plot(chart2[key].get('Sorcery').values(), color='#264041')
+    plt.plot(chart2[key].get('Enchantment').values(), color='#a580c1')
+    plt.plot(chart2[key].get('Artifact').values(), color='#004080')
+    if chart2[key].get('Planeswalker') != None:
+        plt.plot(chart2[key].get('Planeswalker').values(), color='#8080ff')
+        plt.legend(['Creatures', 'Instants', 'Sorceries', 'Enchantments', 'Artifacts'])
+    else:
+        plt.legend(['Creatures', 'Instants', 'Sorceries', 'Enchantments', 'Artifacts', 'Planeswalkers'])
+    plt.show()
 
 #Graph chart 3
