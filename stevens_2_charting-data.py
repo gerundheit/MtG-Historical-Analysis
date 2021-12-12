@@ -76,6 +76,7 @@ for creature in creatures_data: #calculate the CMC quotient (power+toughness)/CM
     cmcQuot = round((power + toughness) / cmc, 2)
     pubDate = setDates.get(creature[0])['date'][0:4]
     chart3.append((pubDate, cmcQuot))
+print(chart3)
 #Close the database
 conn.close()
 
