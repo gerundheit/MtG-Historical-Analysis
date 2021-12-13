@@ -1,8 +1,8 @@
 # MtG-Historical-Analysis
- Uses the Magic the Gathering API to perform statistical analysis on the evolution of published cards over the course of the game's history.
+ Uses the Magic the Gathering API to build a localized database of card information and perform statistical analysis on the evolution of published cards over the course of the game's history.
 
  PART 1: Transforming Data
- The dataset is downloaded via basic API query and saved locally as JSON file. Data is extracted from JSON and loaded into database to perform the analysis described in Parts 2 & 3.
+ The dataset is downloaded via basic API query and saved locally as JSON file. Data is extracted from JSON and loaded into a local database to perform the analysis described in Parts 2 & 3.
 
  PART 2: Charting Data
  MatPlotLib is used to create charts of several historical trends of interest over the game's development. Chart 1 is a multi-line graph depicting the numbers of cards of each major type published in each successive core set, to show trends in the relative numbers of e.g. creature cards vs. sorcery cards over time. Charts 2-1 through 2-3 sample three card sets of interest and depict their mana curves for different card types, i.e. the number of cards in the set broken down by card type and mana cost. Chart 3 shows the power and toughness of creatures relative to their mana cost over time on a scatter plot.
@@ -14,19 +14,39 @@
  The methodology and results of the project will be presented in a ten-minute slideshow video with voiceover narration. A 2-3 page writeup of the experience of the project will accompany, and the dataset and code will be made available to classmates via GitHub for review.
 
 ## Installation
- This project is written in Python 3.9.4. It requires the additional libraries MatPlotLib, Requests, and SQlite, which are available via Pip.
+ This project is written in Python 3.9.4. It requires the additional libraries MatPlotLib, Requests, and SQLite, which are available via Pip.
 
 ## Usage
- TODO: Write usage instructions
+ Others are welcome to use and modify this project's code as they will. The programs are structured in such a way as to hopefully make it easy to rewrite them to answer new questions about the data set.
 
 ## Contributing
- TODO: Write contributor suggestions
+ This is a learner's project and contributions are welcome to expand upon or clean up the code.
 
 ## History
  Developed by Ray Stevens in November 2021 for Dr. Catherine Dumas's course 487 Data Interoperability at Simmons University, School of Library and Information Science, Boston, MA.
 
 ## Credits
- This project uses the Magic the Gathering API published at https://magicthegathering.io/. Thanks also to the folks at MatPlotLib (https://matplotlib.org/) for visualization tools and at Requests (https://docs.python-requests.org/en/master/index.html) for API handling.
+ This project uses the Magic the Gathering API published at https://magicthegathering.io/. Thanks also to the folks at MatPlotLib (https://matplotlib.org/) for visualization tools, at Requests (https://docs.python-requests.org/en/master/index.html) for API handling, and at SQLite (https://sqlite.org/index.html) for database management.
 
 ## License
- TODO: Decide on licensing
+ MIT License
+
+ Copyright (c) 2021 Ray A. Stevens
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
