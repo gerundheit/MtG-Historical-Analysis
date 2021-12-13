@@ -1,4 +1,5 @@
 #MtG Historical Analysis Part 0: Proof of Access
+#Initial project submission to demonstrate availability of chosen data
 import requests, time, os, json
 
 #make a folder for the files
