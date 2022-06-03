@@ -1,5 +1,5 @@
 # MtG-Historical-Analysis
- Uses the (<[Magic the Gathering API](https://magicthegathering.io/)> "MtG API") to build a localized database of card information and perform statistical analysis on the evolution of published cards over the course of the game's history. This project was developed in four parts as part of Simmons University's fall 2021 course, Data Interoperability.
+ Uses the [Magic the Gathering API](<https://magicthegathering.io/>) to build a localized database of card information and perform statistical analysis on the evolution of published cards over the course of the game's history. This project was developed in four parts as part of Simmons University's fall 2021 course, Data Interoperability.
 
 ### Part 1: Transforming Data
  The dataset is downloaded via basic API query and saved locally as JSON file. Data is extracted from JSON and loaded into a local database to perform the analysis described in Parts 2 & 3.
